@@ -7,6 +7,7 @@ from database.core import db
 
 # Callback Data Factory для пагинации
 class SearchPagination(CallbackData, prefix="search"):
+    action: str
     page: int
 
     # Это параметр будет = normal в случае вывода всех книг
@@ -92,7 +93,6 @@ class ClientKeyboards:
                 second_page = books[9:18]
                 books = books[:9]
 
-            print(books)
 
             for i in books:
                 # callback_data == book rowid

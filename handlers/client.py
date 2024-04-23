@@ -104,6 +104,7 @@ async def getting_custom_style(message: types.Message, state: FSMContext):
                       author=data["author"],
                       description=data["description"],
                       style=message.text)
+    await state.clear()
 
 
 # Поиск книг
@@ -132,8 +133,7 @@ async def by_style(callback: types.CallbackQuery, state: FSMContext):
 
 
 # Поиск по жанру из списка
-@router.callback_query(F.data.in_(["comedy", "drama", "tragedy"]),
-                       SearchByStyle.search)
+@router.callback_query(SearchByStyle.search)
 async def searching_by_style(callback: types.CallbackQuery, state: FSMContext):
     books = await db.get_books_by_style(callback.data)
     if len(books) == 0:
@@ -178,7 +178,7 @@ async def all_books_next(callback: types.CallbackQuery, callback_data: SearchPag
 
 
 # Отрабатывает при нажатии кнопки ◀️
-@router.callback_query(SearchPagination.filter(F.action == "prev"), F.text)
+@router.callback_query(SearchPagination.filter(F.action == "prev"))
 async def all_books_prev(callback: types.CallbackQuery, callback_data: SearchPagination):
 
     # Для понимания прочитай комментарий в классе SearchPagination
